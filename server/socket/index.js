@@ -27,7 +27,7 @@ const io = new Server(server, {
 const onlineUser = new Set();
 
 io.on('connection', async (socket) => {
-    console.log("connected user ", socket.id);
+    // console.log("connected user ", socket.id);
 
     const token = socket.handshake.auth.token;
     // console.log("Received Token:", token);
@@ -41,7 +41,7 @@ io.on('connection', async (socket) => {
     const userId = user?._id?.toString();  // Convert ObjectId to string
     socket.join(user?._id?.toString())
     onlineUser.add(user?._id?.toString());
-    console.log(" User added to online users:", user._id);
+    // console.log(" User added to online users:", user._id);
 
     //for sending client side user will be online
     io.emit('onlineUser', Array.from(onlineUser))
@@ -49,7 +49,7 @@ io.on('connection', async (socket) => {
 
 
     socket.on('message-page', async (userId) => {
-        console.log(' Received userId in backend:', userId); // Check if it's received correctly
+        // console.log(' Received userId in backend:', userId); // Check if it's received correctly
 
         if (!userId) {
             console.log(" No userId received!");
@@ -163,7 +163,7 @@ io.on('connection', async (socket) => {
 
     //sidebar
     socket.on('sidebar', async (currentUserId) => {
-        console.log("current user", currentUserId)
+        // console.log("current user", currentUserId)
         const conversation = await getConversation(currentUserId)
         socket.emit('conversation', conversation)
 

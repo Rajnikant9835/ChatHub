@@ -42,28 +42,63 @@ const Home = () => {
     fetchUserDetails()
   }, [])
 
-  /***socket connection */
+  // /***socket connection */
+  // useEffect(() => {
+  //   const socketConnection = io(process.env.REACT_APP_BACKEND_URL, {
+  //     auth: {
+  //       token:localStorage.getItem('token')
+  //     }
+  //   })
+  //   //for online user
+  //   socketConnection.on('onlineUser',(data)=>{
+  //     console.log(data)
+  //     dispatch(setOnlineUser(data))
+  //   })
+
+  //   //for showing user in message section
+  //   dispatch(setSocketConnection(socketConnection))
+
+  //   return() =>{
+
+  //     socketConnection.disconnect()
+  //   }
+
+  // }, [])
+
+  //socket connection 
   useEffect(() => {
+    const token = localStorage.getItem('token');
+  
+    if (!token) {
+      console.warn("No token found in localStorage!");
+      return;
+    }
+  
     const socketConnection = io(process.env.REACT_APP_BACKEND_URL, {
       auth: {
-        token:localStorage.getItem('token')
+        token
       }
-    })
-    //for online user
-    socketConnection.on('onlineUser',(data)=>{
-      console.log(data)
-      dispatch(setOnlineUser(data))
-    })
+    });
+  
+    socketConnection.on('connect_error', (err) => {
+      console.error("Socket connection error:", err.message);
+    });
+  
+    socketConnection.on('onlineUser', (data) => {
+      console.log("Online users:", data);
+      dispatch(setOnlineUser(data));
+    });
+  
+    dispatch(setSocketConnection(socketConnection));
+  
+    return () => {
+      socketConnection.disconnect();
+    };
+  
+  }, []);
+  
 
-    //for showing user in message section
-    dispatch(setSocketConnection(socketConnection))
 
-    return() =>{
-
-      socketConnection.disconnect()
-    }
-
-  }, [])
   const basePath = location.pathname === '/'
   return (
     <div className='grid lg:grid-cols-[300px,1fr] h-screen max-h-screen'>

@@ -30,4 +30,6 @@ router.post('/update-user', updateUserDetails)
 //search user
 router.post('/search-user', searchUser);
 
+
+
 module.exports = router

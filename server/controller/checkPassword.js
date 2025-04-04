@@ -45,5 +45,3 @@ async function checkPassword(request, response) {
 }
 
 module.exports = checkPassword;
-
-

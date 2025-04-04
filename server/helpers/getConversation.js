@@ -10,7 +10,7 @@ const getConversation = async (currentUserId) => {
         }).sort({ updatedAt: -1 }).populate('messages').populate('sender').populate('receiver')
 
 
-        console.log("currentUserConversation", currentUserConversation)
+        // console.log("currentUserConversation", currentUserConversation)
 
         const conversation = currentUserConversation.map((conv) => {
 
